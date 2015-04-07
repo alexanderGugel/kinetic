@@ -23,17 +23,18 @@ window.onload = function () {
     }
 
     function track() {
+
         var now, elapsed, delta, v;
 
-        now = Date.now();
+        now = window.performance.now();
         elapsed = now - timestamp;
         timestamp = now;
         delta = offset - frame;
         frame = offset;
 
         v = 1000 * delta / (1 + elapsed);
-        // velocity = 0.8 * v + 0.2 * velocity;
-        velocity = 0.5 * (v + velocity);
+        velocity = 0.8 * v + 0.2 * velocity;
+        // velocity = 0.5 * (v + velocity);
 
         ticker = requestAnimationFrame(track)
     }
@@ -42,7 +43,7 @@ window.onload = function () {
         var elapsed, delta;
 
         if (amplitude) {
-            elapsed = Date.now() - timestamp;
+            elapsed = window.performance.now() - timestamp;
             delta = -amplitude * Math.exp(-elapsed / timeConstant);
             if (delta > 0.5 || delta < -0.5) {
                 scroll(target + delta);
@@ -59,7 +60,7 @@ window.onload = function () {
 
         velocity = amplitude = 0;
         frame = offset;
-        timestamp = Date.now();
+        timestamp = window.performance.now();
         cancelAnimationFrame(ticker);
         ticker = requestAnimationFrame(track);
 
@@ -90,7 +91,7 @@ window.onload = function () {
         if (velocity > 10 || velocity < -10) {
             amplitude = 0.8 * velocity;
             target = Math.round(offset + amplitude);
-            timestamp = Date.now();
+            timestamp = window.performance.now();
             requestAnimationFrame(autoScroll);
         }
 
