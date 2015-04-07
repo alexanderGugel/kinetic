@@ -32,7 +32,8 @@ window.onload = function () {
         frame = offset;
 
         v = 1000 * delta / (1 + elapsed);
-        velocity = 0.8 * v + 0.2 * velocity;
+        // velocity = 0.8 * v + 0.2 * velocity;
+        velocity = 0.5 * (v + velocity);
     }
 
     function autoScroll() {
@@ -58,7 +59,7 @@ window.onload = function () {
         frame = offset;
         timestamp = Date.now();
         clearInterval(ticker);
-        ticker = setInterval(track, 100);
+        ticker = setInterval(track, 1);
 
         e.preventDefault();
         e.stopPropagation();
