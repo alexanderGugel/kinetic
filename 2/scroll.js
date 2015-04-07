@@ -34,6 +34,8 @@ window.onload = function () {
         v = 1000 * delta / (1 + elapsed);
         // velocity = 0.8 * v + 0.2 * velocity;
         velocity = 0.5 * (v + velocity);
+
+        ticker = requestAnimationFrame(track)
     }
 
     function autoScroll() {
@@ -58,8 +60,8 @@ window.onload = function () {
         velocity = amplitude = 0;
         frame = offset;
         timestamp = Date.now();
-        clearInterval(ticker);
-        ticker = setInterval(track, 1);
+        cancelAnimationFrame(ticker);
+        ticker = requestAnimationFrame(track);
 
         e.preventDefault();
         e.stopPropagation();
@@ -84,7 +86,7 @@ window.onload = function () {
     function release(e) {
         pressed = false;
 
-        clearInterval(ticker);
+        cancelAnimationFrame(ticker);
         if (velocity > 10 || velocity < -10) {
             amplitude = 0.8 * velocity;
             target = Math.round(offset + amplitude);
