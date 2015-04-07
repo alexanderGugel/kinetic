@@ -6,6 +6,10 @@ window.onload = function () {
         velocity, frame, timestamp, ticker,
         amplitude, target, timeConstant;
 
+    var now = window.performance ? function() {
+        return window.performance.now();
+    } : Date.now;
+
     function ypos(e) {
         // touch event
         if (e.targetTouches && (e.targetTouches.length >= 1)) {
@@ -24,11 +28,11 @@ window.onload = function () {
 
     function track() {
 
-        var now, elapsed, delta, v;
+        var t, elapsed, delta, v;
 
-        now = window.performance.now();
-        elapsed = now - timestamp;
-        timestamp = now;
+        t = now();
+        elapsed = t - timestamp;
+        timestamp = t;
         delta = offset - frame;
         frame = offset;
 
@@ -43,7 +47,7 @@ window.onload = function () {
         var elapsed, delta;
 
         if (amplitude) {
-            elapsed = window.performance.now() - timestamp;
+            elapsed = now() - timestamp;
             delta = -amplitude * Math.exp(-elapsed / timeConstant);
             if (delta > 0.5 || delta < -0.5) {
                 scroll(target + delta);
@@ -60,7 +64,7 @@ window.onload = function () {
 
         velocity = amplitude = 0;
         frame = offset;
-        timestamp = window.performance.now();
+        timestamp = now();
         cancelAnimationFrame(ticker);
         ticker = requestAnimationFrame(track);
 
@@ -91,7 +95,7 @@ window.onload = function () {
         if (velocity > 10 || velocity < -10) {
             amplitude = 0.8 * velocity;
             target = Math.round(offset + amplitude);
-            timestamp = window.performance.now();
+            timestamp = now();
             requestAnimationFrame(autoScroll);
         }
 
